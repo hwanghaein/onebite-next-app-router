@@ -1,9 +1,12 @@
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
+import { delay } from "@/util/delay";
 
 interface SearchPageProps {
   searchParams: { q?: string }; // 검색 쿼리의 타입 정의
 }
+
+await delay(1500)
 
 export default async function Page({ searchParams }: SearchPageProps) {
   const query = searchParams.q || ""; // undefined일 경우 빈 문자열로 처리
