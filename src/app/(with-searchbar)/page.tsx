@@ -1,6 +1,8 @@
 import BookItem from "@/components/book-item";
 import style from "./page.module.css";
 import { BookData } from "@/types";
+import { delay } from "@/util/delay";
+import { Suspense } from "react";
 
 // export const dynamic = "force-dynamic";
 // 특정 페이지의 유형을 강제로 Static, Dynamic 페이지로 설정
@@ -10,7 +12,8 @@ import { BookData } from "@/types";
 // 4. error: 페이지를 강제로 Static 페이지로 설정 (빌드 오류를 통해 설정하면 안되는 이유를 알수있음)
 
 async function AllBooks() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`, {cache: "force-cache"})
+  await delay(1500);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`, { cache: "force-cache" })
   if (!response.ok) {
     return <div>오류가 발생했습니다 ...</div>
   }
@@ -26,6 +29,7 @@ async function AllBooks() {
 }
 
 async function RecoBooks() {
+  await delay(3000);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`)
   if (!response.ok) {
     return <div>오류가 발생했습니다 ...</div>
@@ -41,17 +45,22 @@ async function RecoBooks() {
   )
 }
 
+export const dynamic = "force-dynamic"
 
 export default function Home() {
   return (
     <div className={style.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
-        <RecoBooks />
-      </section>x
+        <Suspense fallback={<div>도서를 불러오는 중입니다...</div>}>
+          <RecoBooks />
+        </Suspense>
+      </section>
       <section>
         <h3>등록된 모든 도서</h3>
+        <Suspense fallback={<div>도서를 불러오는 중입니다...</div>}>
         <AllBooks />
+        </Suspense>
       </section>
     </div>
   );

@@ -1,19 +1,13 @@
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
 import { delay } from "@/util/delay";
+import { Suspense } from "react";
 
-interface SearchPageProps {
-  searchParams: { q?: string }; // 검색 쿼리의 타입 정의
-}
-
-await delay(1500)
-
-export default async function Page({ searchParams }: SearchPageProps) {
-  const query = searchParams.q || ""; // undefined일 경우 빈 문자열로 처리
-
+async function SearchResult({ q }: { q: string }) {
+  await delay(1500)
   // API 호출
   const response = await fetch(
-  `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${query}`, {cache: "force-cache"}
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`, { cache: "force-cache" }
   );
 
   if (!response.ok) {
@@ -30,4 +24,18 @@ export default async function Page({ searchParams }: SearchPageProps) {
       ))}
     </div>
   );
+}
+
+
+
+interface SearchPageProps {
+  searchParams: { q?: string }; // 검색 쿼리의 타입 정의
+}
+
+export default function Page({ searchParams }: SearchPageProps) {
+  return (
+    <Suspense key={searchParams.q || ""} fallback={<div>Loading...</div>}>
+      <SearchResult q={searchParams.q || ""} />
+    </Suspense>
+  )
 }
