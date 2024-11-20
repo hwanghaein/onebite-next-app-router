@@ -19,8 +19,8 @@ useEffect(()=>{
 },[state])
 
 return <form ref={formRef} action={formAction}>
-  <input name="reviewId" value={reviewId} hidden/>
-  <input name="bookId" value={bookId} hidden/>
+  <input name="reviewId" value={reviewId} hidden readOnly/>
+  <input name="bookId" value={bookId} hidden readOnly/>
   {isPending ? (<div>...</div>) : (  <div onClick={()=> formRef.current?.requestSubmit()}>삭제하기</div>)}
 
 </form>
