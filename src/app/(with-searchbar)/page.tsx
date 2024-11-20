@@ -13,7 +13,7 @@ import BookListSkeleton from "@/components/book-list-skeleton";
 // 3. force-static : 페이지를 강제로 Static 페이지로 설정
 // 4. error: 페이지를 강제로 Static 페이지로 설정 (빌드 오류를 통해 설정하면 안되는 이유를 알수있음)
 
-async function AllBooks() {
+async function AllBooks() { 
   await delay(1500);
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`, { cache: "force-cache" })
   if (!response.ok) {
